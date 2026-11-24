@@ -64,6 +64,7 @@ partial class MainForm
     private Button _btnCreateSrt = null!;
     private Button _btnExtractTimeline = null!;
     private Button _btnJoinMp3 = null!;
+    private Button _btnBatchImage = null!;
     private Button _btnClearList = null!;
     private SmoothDataGridView _gridSubtitles = null!;
     private ContextMenuStrip _ctxGrid = null!;
@@ -716,24 +717,41 @@ partial class MainForm
         var toolbar = new FlowLayoutPanel
         {
             Dock = DockStyle.Top,
-            WrapContents = true,
+            WrapContents = false,
             AutoSize = true,
             AutoSizeMode = AutoSizeMode.GrowAndShrink,
+            AutoScroll = false,
             Margin = new Padding(0),
             Padding = new Padding(0, 2, 0, 4)
         };
 
-        _btnStart        = MakeToolBtn("▶ Start", true);
-        _btnStop         = MakeToolBtn("■ Stop", true);
-        _btnImportFile   = MakeToolBtn("📂 Import File");
-        _btnPasteText    = MakeToolBtn("📋 Dán văn bản");
-        _btnImportFolder = MakeToolBtn("📁 Import Folder");
-        _btnPreview      = MakeToolBtn("🔊 Nghe thử");
-        _btnOpenOutput   = MakeToolBtn("📤 Open Output");
+        var toolTip = new ToolTip();
+
+        _btnStart           = MakeToolBtn("▶ Start", true);
+        _btnStop            = MakeToolBtn("■ Stop", true);
+        _btnImportFile      = MakeToolBtn("📂 File");
+        _btnPasteText       = MakeToolBtn("📋 Dán text");
+        _btnImportFolder    = MakeToolBtn("📁 Folder");
+        _btnPreview         = MakeToolBtn("🔊 Nghe thử");
+        _btnOpenOutput      = MakeToolBtn("📤 Output");
         _btnCreateSrt       = MakeToolBtn("📝 Tạo SRT");
-        _btnExtractTimeline = MakeToolBtn("⏱ Bóc Timeline");
+        _btnExtractTimeline = MakeToolBtn("⏱ Timeline");
         _btnJoinMp3         = MakeToolBtn("🔗 Join MP3");
-        _btnClearList       = MakeToolBtn("🗑 Xóa danh sách");
+        _btnBatchImage      = MakeToolBtn("🖼 Xử lý Ảnh");
+        _btnClearList       = MakeToolBtn("🗑 Xóa hết");
+
+        toolTip.SetToolTip(_btnStart, "Bắt đầu tạo audio cho danh sách phụ đề");
+        toolTip.SetToolTip(_btnStop, "Dừng tiến trình đang chạy");
+        toolTip.SetToolTip(_btnImportFile, "Import file kịch bản / phụ đề (*.srt, *.txt)");
+        toolTip.SetToolTip(_btnPasteText, "Dán nhanh văn bản từ clipboard và tự động chia dòng");
+        toolTip.SetToolTip(_btnImportFolder, "Import hàng loạt file trong thư mục");
+        toolTip.SetToolTip(_btnPreview, "Phát nghe thử file âm thanh của dòng đang chọn");
+        toolTip.SetToolTip(_btnOpenOutput, "Mở thư mục chứa file âm thanh đã xuất");
+        toolTip.SetToolTip(_btnCreateSrt, "Tạo file phụ đề SRT đồng bộ theo thời lượng audio");
+        toolTip.SetToolTip(_btnExtractTimeline, "Bóc Timeline Chuẩn với Whisper AI & gom cảnh video");
+        toolTip.SetToolTip(_btnJoinMp3, "Ghép tất cả các đoạn âm thanh thành 1 file MP3 hoàn chỉnh");
+        toolTip.SetToolTip(_btnBatchImage, "Xử lý ảnh hàng loạt (xóa watermark, đổi .webp sang PNG/JPG, upscale 1080p)");
+        toolTip.SetToolTip(_btnClearList, "Xóa toàn bộ danh sách phụ đề hiện tại");
 
         _btnStop.Enabled = false;
 
@@ -747,6 +765,7 @@ partial class MainForm
         _btnCreateSrt.Click       += BtnCreateSrt_Click;
         _btnExtractTimeline.Click += BtnExtractTimeline_Click;
         _btnJoinMp3.Click         += BtnJoinMp3_Click;
+        _btnBatchImage.Click      += BtnBatchImage_Click;
         _btnClearList.Click       += BtnClearList_Click;
 
         toolbar.Controls.AddRange(new Control[]
@@ -761,6 +780,7 @@ partial class MainForm
             _btnCreateSrt,
             _btnExtractTimeline,
             _btnJoinMp3,
+            _btnBatchImage,
             _btnClearList
         });
 
@@ -891,8 +911,8 @@ partial class MainForm
             AutoSize = true,
             AutoSizeMode = AutoSizeMode.GrowAndShrink,
             Height = 30,
-            Margin = new Padding(0, 0, 4, 3),
-            Padding = new Padding(6, 1, 6, 1),
+            Margin = new Padding(0, 0, 3, 2),
+            Padding = new Padding(4, 1, 4, 1),
             FlatStyle = FlatStyle.Standard,
             UseVisualStyleBackColor = true,
             UseCompatibleTextRendering = false

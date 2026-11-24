@@ -45,12 +45,15 @@ public sealed partial class MainForm : Form
 
     private void WireEvents()
     {
-        _cmbEngine.SelectedIndexChanged   += (s, e) => UpdateControlsByProvider(loadVoices: true);
-        _cmbLanguage.SelectedIndexChanged += (s, e) => LoadVoicesAsync();
-        _cmbVoice.SelectedIndexChanged    += (s, e) => AutoDetectModelForVoice();
-        _cmbVoice.TextChanged             += (s, e) => AutoDetectModelForVoice();
-        _elapsedTimer.Tick                += ElapsedTimer_Tick;
-        FormClosing                       += MainForm_FormClosing;
+        if (_cmbEngine != null) _cmbEngine.SelectedIndexChanged += (s, e) => UpdateControlsByProvider(loadVoices: true);
+        if (_cmbLanguage != null) _cmbLanguage.SelectedIndexChanged += (s, e) => LoadVoicesAsync();
+        if (_cmbVoice != null)
+        {
+            _cmbVoice.SelectedIndexChanged += (s, e) => AutoDetectModelForVoice();
+            _cmbVoice.TextChanged          += (s, e) => AutoDetectModelForVoice();
+        }
+        _elapsedTimer.Tick += ElapsedTimer_Tick;
+        FormClosing        += MainForm_FormClosing;
 
         _audioPlayer.PlaybackStarted += (s, e) =>
         {
@@ -63,29 +66,35 @@ public sealed partial class MainForm : Form
             else _btnPreview.Text = "🔊 Nghe thử";
         };
 
-        _lblStatusFfmpeg.Click += (s, e) =>
+        if (_lblStatusFfmpeg != null)
         {
-            if (!ConfigService.IsFfmpegReady(_config.FfmpegPath))
+            _lblStatusFfmpeg.Click += (s, e) =>
             {
-                BtnSettings_Click(s, e);
-            }
-        };
+                if (!ConfigService.IsFfmpegReady(_config.FfmpegPath))
+                {
+                    BtnSettings_Click(s, e);
+                }
+            };
+        }
     }
 
     private void ApplyConfig()
     {
-        _cmbEngine.SelectedIndexChanged -= (s, e) => UpdateControlsByProvider(loadVoices: true);
-        _cmbEngine.SelectedIndex = (int)_config.LastProvider;
-        _cmbEngine.SelectedIndexChanged += (s, e) => UpdateControlsByProvider(loadVoices: true);
+        if (_cmbEngine != null)
+        {
+            _cmbEngine.SelectedIndexChanged -= (s, e) => UpdateControlsByProvider(loadVoices: true);
+            _cmbEngine.SelectedIndex = (int)_config.LastProvider;
+            _cmbEngine.SelectedIndexChanged += (s, e) => UpdateControlsByProvider(loadVoices: true);
+        }
 
-        _chkCustomVoice.Checked  = _config.CustomVoiceParams;
-        _chkAutoRetry.Checked    = _config.AutoRetry;
-        _chkAutoSplit.Checked    = _config.AutoSplit;
-        _nudMaxChars.Value       = Math.Clamp(_config.AutoSplitMaxChars, 50, 2000);
-        _nudThreads.Value        = Math.Clamp(_config.MaxConcurrency, 1, 10);
-        _nudSilenceGap.Value     = Math.Clamp(_config.SilenceGapMs, 0, 3000);
-        _chkAutoSrt.Checked      = _config.AutoCreateSrt;
-        _chkAutoJoin.Checked     = _config.AutoJoinMp3;
+        if (_chkCustomVoice != null) _chkCustomVoice.Checked = _config.CustomVoiceParams;
+        if (_chkAutoRetry != null)   _chkAutoRetry.Checked   = _config.AutoRetry;
+        if (_chkAutoSplit != null)   _chkAutoSplit.Checked   = _config.AutoSplit;
+        if (_nudMaxChars != null)    _nudMaxChars.Value      = Math.Clamp(_config.AutoSplitMaxChars, 50, 2000);
+        if (_nudThreads != null)     _nudThreads.Value       = Math.Clamp(_config.MaxConcurrency, 1, 10);
+        if (_nudSilenceGap != null)  _nudSilenceGap.Value    = Math.Clamp(_config.SilenceGapMs, 0, 3000);
+        if (_chkAutoSrt != null)     _chkAutoSrt.Checked     = _config.AutoCreateSrt;
+        if (_chkAutoJoin != null)    _chkAutoJoin.Checked    = _config.AutoJoinMp3;
     }
 
     private void CheckFfmpeg()
@@ -1219,6 +1228,12 @@ public sealed partial class MainForm : Form
     private void BtnExtractTimeline_Click(object? sender, EventArgs e)
     {
         using var form = new TimelineBuilderForm(_lines, (int)_nudSilenceGap.Value);
+        form.ShowDialog(this);
+    }
+
+    private void BtnBatchImage_Click(object? sender, EventArgs e)
+    {
+        using var form = new BatchImageForm();
         form.ShowDialog(this);
     }
 
