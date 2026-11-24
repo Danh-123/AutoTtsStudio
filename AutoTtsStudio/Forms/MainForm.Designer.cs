@@ -153,6 +153,7 @@ partial class MainForm
 
         Controls.Add(rootTlp);
         Controls.Add(_statusStrip);
+        _statusStrip.SendToBack();
 
         ResumeLayout(false);
         PerformLayout();
@@ -801,7 +802,7 @@ partial class MainForm
             new DataGridViewTextBoxColumn { Name = "colIndex",    HeaderText = "STT",        Width = 55,  MinimumWidth = 55,  SortMode = DataGridViewColumnSortMode.NotSortable },
             new DataGridViewTextBoxColumn { Name = "colText",     HeaderText = "Nội dung",   AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill, MinimumWidth = 260, SortMode = DataGridViewColumnSortMode.NotSortable },
             new DataGridViewTextBoxColumn { Name = "colChars",    HeaderText = "Ký tự",      Width = 70,  MinimumWidth = 70,  SortMode = DataGridViewColumnSortMode.NotSortable },
-            new DataGridViewTextBoxColumn { Name = "colDuration", HeaderText = "Thời lượng", Width = 95,  MinimumWidth = 95,  SortMode = DataGridViewColumnSortMode.NotSortable },
+            new DataGridViewTextBoxColumn { Name = "colDuration", HeaderText = "Thời lượng", Width = 105, MinimumWidth = 100, SortMode = DataGridViewColumnSortMode.NotSortable },
             new DataGridViewTextBoxColumn { Name = "colStatus",   HeaderText = "Trạng thái", Width = 140, MinimumWidth = 130, SortMode = DataGridViewColumnSortMode.NotSortable },
             new DataGridViewTextBoxColumn { Name = "colOutput",   HeaderText = "File Output", Width = 180, MinimumWidth = 180, SortMode = DataGridViewColumnSortMode.NotSortable }
         });
@@ -890,8 +891,8 @@ partial class MainForm
             AutoSize = true,
             AutoSizeMode = AutoSizeMode.GrowAndShrink,
             Height = 30,
-            Margin = new Padding(0, 0, 6, 4),
-            Padding = new Padding(8, 2, 8, 2),
+            Margin = new Padding(0, 0, 4, 3),
+            Padding = new Padding(6, 1, 6, 1),
             FlatStyle = FlatStyle.Standard,
             UseVisualStyleBackColor = true,
             UseCompatibleTextRendering = false

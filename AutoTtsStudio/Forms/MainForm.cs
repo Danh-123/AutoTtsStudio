@@ -47,6 +47,8 @@ public sealed partial class MainForm : Form
     {
         _cmbEngine.SelectedIndexChanged   += (s, e) => UpdateControlsByProvider(loadVoices: true);
         _cmbLanguage.SelectedIndexChanged += (s, e) => LoadVoicesAsync();
+        _cmbVoice.SelectedIndexChanged    += (s, e) => AutoDetectModelForVoice();
+        _cmbVoice.TextChanged             += (s, e) => AutoDetectModelForVoice();
         _elapsedTimer.Tick                += ElapsedTimer_Tick;
         FormClosing                       += MainForm_FormClosing;
 
@@ -302,6 +304,8 @@ public sealed partial class MainForm : Form
                 }
             }
 
+            AutoDetectModelForVoice();
+
             // Update status bar with voice search result or count
             if (voices.Count == 0 && !string.IsNullOrEmpty(searchTerm))
             {
@@ -343,6 +347,31 @@ public sealed partial class MainForm : Form
                 else if (string.Equals(_cmbVoice.Text, LoadingVoicesPlaceholder, StringComparison.OrdinalIgnoreCase))
                 {
                     _cmbVoice.Text = string.Empty;
+                }
+            }
+        }
+    }
+
+    private void AutoDetectModelForVoice()
+    {
+        if ((ProviderType)_cmbEngine.SelectedIndex == ProviderType.LocalOpenAiApi)
+        {
+            var vi = _cmbVoice.SelectedItem as VoiceInfo;
+            var voiceId = vi?.Id ?? _cmbVoice.Text?.Trim() ?? string.Empty;
+            if (!string.IsNullOrEmpty(voiceId) && (voiceId.EndsWith(".wav", StringComparison.OrdinalIgnoreCase) || voiceId.Contains(".wav", StringComparison.OrdinalIgnoreCase)))
+            {
+                int chatterIdx = _cmbModel.FindStringExact("chatterbox");
+                if (chatterIdx >= 0 && _cmbModel.SelectedIndex != chatterIdx)
+                {
+                    _cmbModel.SelectedIndex = chatterIdx;
+                }
+            }
+            else if (!string.IsNullOrEmpty(voiceId) && (voiceId.StartsWith("am_") || voiceId.StartsWith("af_") || voiceId.StartsWith("bm_") || voiceId.StartsWith("bf_")))
+            {
+                int kokoroIdx = _cmbModel.FindStringExact("kokoro");
+                if (kokoroIdx >= 0 && _cmbModel.SelectedIndex != kokoroIdx)
+                {
+                    _cmbModel.SelectedIndex = kokoroIdx;
                 }
             }
         }
