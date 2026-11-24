@@ -1187,6 +1187,12 @@ public sealed partial class MainForm : Form
         }
     }
 
+    private void BtnExtractTimeline_Click(object? sender, EventArgs e)
+    {
+        using var form = new TimelineBuilderForm(_lines, (int)_nudSilenceGap.Value);
+        form.ShowDialog(this);
+    }
+
     private async void BtnJoinMp3_Click(object? sender, EventArgs e)
     {
         if (_lines.Count == 0)

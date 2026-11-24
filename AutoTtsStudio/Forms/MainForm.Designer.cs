@@ -62,6 +62,7 @@ partial class MainForm
     private Button _btnPreview = null!;
     private Button _btnOpenOutput = null!;
     private Button _btnCreateSrt = null!;
+    private Button _btnExtractTimeline = null!;
     private Button _btnJoinMp3 = null!;
     private Button _btnClearList = null!;
     private SmoothDataGridView _gridSubtitles = null!;
@@ -728,22 +729,24 @@ partial class MainForm
         _btnImportFolder = MakeToolBtn("📁 Import Folder");
         _btnPreview      = MakeToolBtn("🔊 Nghe thử");
         _btnOpenOutput   = MakeToolBtn("📤 Open Output");
-        _btnCreateSrt    = MakeToolBtn("📝 Tạo SRT");
-        _btnJoinMp3      = MakeToolBtn("🔗 Join MP3");
-        _btnClearList    = MakeToolBtn("🗑 Xóa danh sách");
+        _btnCreateSrt       = MakeToolBtn("📝 Tạo SRT");
+        _btnExtractTimeline = MakeToolBtn("⏱ Bóc Timeline");
+        _btnJoinMp3         = MakeToolBtn("🔗 Join MP3");
+        _btnClearList       = MakeToolBtn("🗑 Xóa danh sách");
 
         _btnStop.Enabled = false;
 
-        _btnStart.Click        += BtnStart_Click;
-        _btnStop.Click         += BtnStop_Click;
-        _btnImportFile.Click   += BtnImportFile_Click;
-        _btnPasteText.Click    += BtnPasteText_Click;
-        _btnImportFolder.Click += BtnImportFolder_Click;
-        _btnPreview.Click      += BtnPreview_Click;
-        _btnOpenOutput.Click   += BtnOpenOutput_Click;
-        _btnCreateSrt.Click    += BtnCreateSrt_Click;
-        _btnJoinMp3.Click      += BtnJoinMp3_Click;
-        _btnClearList.Click    += BtnClearList_Click;
+        _btnStart.Click           += BtnStart_Click;
+        _btnStop.Click            += BtnStop_Click;
+        _btnImportFile.Click      += BtnImportFile_Click;
+        _btnPasteText.Click       += BtnPasteText_Click;
+        _btnImportFolder.Click    += BtnImportFolder_Click;
+        _btnPreview.Click         += BtnPreview_Click;
+        _btnOpenOutput.Click      += BtnOpenOutput_Click;
+        _btnCreateSrt.Click       += BtnCreateSrt_Click;
+        _btnExtractTimeline.Click += BtnExtractTimeline_Click;
+        _btnJoinMp3.Click         += BtnJoinMp3_Click;
+        _btnClearList.Click       += BtnClearList_Click;
 
         toolbar.Controls.AddRange(new Control[]
         {
@@ -755,6 +758,7 @@ partial class MainForm
             _btnPreview,
             _btnOpenOutput,
             _btnCreateSrt,
+            _btnExtractTimeline,
             _btnJoinMp3,
             _btnClearList
         });
